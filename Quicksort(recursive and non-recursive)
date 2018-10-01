@@ -85,7 +85,7 @@ public class QuickSort {
 	{
 		int[] a = {1, 6, 8, 2, 5, 5, 9, 13, 2, 9, 19, 4};
 		System.out.println(Arrays.toString(a));
-        Quicksort(a,0,a.length-1);
+        	Quicksort(a,0,a.length-1);
 		System.out.println(Arrays.toString(a));  
 		int[] b = {3, 2, 8, 2, 4, 10, 1, 13, 6, 7, 2, 18};
 		System.out.println(Arrays.toString(b));
