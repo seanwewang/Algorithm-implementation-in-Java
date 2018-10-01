@@ -1,0 +1,95 @@
+package test;
+
+import java.util.Arrays;
+
+public class QuickSort {
+
+	public static class Stack{ // Stack for non-recursion Quicksort
+		int[] array;
+		int N = 0;
+		public Stack(int length) {
+			array = new int[length-1];
+		}
+		public void push(int i)
+		{
+			array[N++] = i;
+		}
+		public int pop()
+		{
+			if(N<=0) return 0;
+			
+			return array[--N];
+		}
+		public boolean isEmpty()
+		{
+			if(N==0) return true;
+			else return false;
+		}
+	}
+  
+	public static void Nquicksort(int[] array, int start, int end) // without recursion
+	{
+		int i,j,rp = 0;
+		Stack s = new Stack(end);
+		s.push(start);
+		s.push(end);
+		while(!s.isEmpty())
+		{
+			i = s.pop();   // new end 
+			j = s.pop();   // new start
+			rp = Partition(array, j, i);
+			if((rp-1) > j) // loop for left sub-array, stack substitute the recursion start and end
+			{
+				s.push(j);
+				s.push(rp-1);
+			}
+			if((rp+1) < i) // loop for right sub-array, stack substitute the recursion start and end
+			{
+				s.push(rp+1);
+				s.push(i);
+			}
+		}
+	}
+	public static void Quicksort( int[] array, int start, int end ) // with recursion
+	{
+		int rp;
+		if(start >= end) return; // loop invariant
+		rp = Partition(array,start,end); // return the right position of the array
+		Quicksort(array, start, rp-1); // loop for left sub-array
+		Quicksort(array, rp+1, end); // loop for right sub-array
+	}
+	public static int Partition( int[] array, int start, int end ) //find the location of right-pointer
+	{
+		int i= start;
+		int j = end;
+		int buf;
+		if(start>end) return 0; // loop invariant
+		int key = array[start];
+		while(i!=j)
+		{
+			while(i<j && array[j] > key) {j--;} // find the item smaller than key in right sub-array
+			while(i<j && array[i] <= key) {i++;}// find the item larger than key in left sub-array
+			if(i<j) // swap
+			{
+				buf = array[i];
+				array[i] = array[j];
+				array[j] = buf;
+			}
+		}
+		buf = array[i]; // swap the first item with supposed location of the first item
+		array[i] = array[start];
+		array[start] = buf;
+		return i;
+	}
+	public static void main (String[] args)
+	{
+		int[] a = {1, 6, 8, 2, 5, 5, 9, 13, 2, 9, 19, 4};
+		System.out.println(Arrays.toString(a));
+        Quicksort(a,0,a.length-1);
+		System.out.println(Arrays.toString(a));  
+		int[] b = {3, 2, 8, 2, 4, 10, 1, 13, 6, 7, 2, 18};
+		System.out.println(Arrays.toString(b));
+		Nquicksort(b, 0, b.length-1);
+		System.out.println(Arrays.toString(b));
+	}
+}
